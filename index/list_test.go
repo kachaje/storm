@@ -3,20 +3,19 @@ package index_test
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
 
-	"github.com/asdine/storm/v3"
-	"github.com/asdine/storm/v3/codec/gob"
-	"github.com/asdine/storm/v3/index"
-	bolt "go.etcd.io/bbolt"
+	"github.com/kachaje/storm/v3"
+	"github.com/kachaje/storm/v3/codec/gob"
+	"github.com/kachaje/storm/v3/index"
 	"github.com/stretchr/testify/require"
+	bolt "go.etcd.io/bbolt"
 )
 
 func TestListIndex(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()
@@ -54,16 +53,28 @@ func TestListIndex(t *testing.T) {
 		require.Equal(t, []byte("id1"), ids[0])
 
 		ids, err = idx.All([]byte("goodbye"), nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id2"), ids[0])
 
 		ids, err = idx.All([]byte("yo"), nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
 		require.Nil(t, ids)
 
 		err = idx.RemoveID([]byte("id2"))
 		require.NoError(t, err)
 
 		ids, err = idx.All([]byte("goodbye"), nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 0)
 
 		err = idx.RemoveID(nil)
@@ -93,11 +104,23 @@ func TestListIndex(t *testing.T) {
 		require.NoError(t, err)
 
 		ids, err = idx.All([]byte("hello"), nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id1"), ids[0])
 		ids, err = idx.All([]byte("hi"), nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 0)
 		ids, err = idx.All([]byte("yo"), nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id3"), ids[0])
 
@@ -107,20 +130,48 @@ func TestListIndex(t *testing.T) {
 		require.NoError(t, err)
 
 		err = idx.Add([]byte("hey"), []byte("id1"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		err = idx.Add([]byte("hey"), []byte("id2"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		err = idx.Add([]byte("hey"), []byte("id3"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		err = idx.Add([]byte("hey"), []byte("id4"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		ids, err = idx.All([]byte("hey"), nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 4)
 
 		opts := index.NewOptions()
 		opts.Limit = 1
 		ids, err = idx.All([]byte("hey"), opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 1)
 
 		opts = index.NewOptions()
 		opts.Skip = 2
 		ids, err = idx.All([]byte("hey"), opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 2)
 
 		opts = index.NewOptions()
@@ -128,6 +179,10 @@ func TestListIndex(t *testing.T) {
 		opts.Limit = 3
 		opts.Reverse = true
 		ids, err = idx.All([]byte("hey"), opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 2)
 		require.Equal(t, []byte("id2"), ids[0])
 
@@ -150,7 +205,7 @@ func TestListIndex(t *testing.T) {
 }
 
 func TestListIndexReverse(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()
@@ -167,12 +222,20 @@ func TestListIndexReverse(t *testing.T) {
 
 		opts := index.NewOptions()
 		ids, err := idx.All([]byte("hello"), opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id1"), ids[0])
 
 		opts = index.NewOptions()
 		opts.Reverse = true
 		ids, err = idx.All([]byte("hello"), opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id1"), ids[0])
 
@@ -182,6 +245,10 @@ func TestListIndexReverse(t *testing.T) {
 		opts = index.NewOptions()
 		opts.Reverse = true
 		ids, err = idx.All([]byte("hello"), opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 2)
 		require.Equal(t, []byte("id2"), ids[0])
 		require.Equal(t, []byte("id1"), ids[1])
@@ -192,7 +259,7 @@ func TestListIndexReverse(t *testing.T) {
 }
 
 func TestListIndexAddRemoveID(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()
@@ -236,7 +303,7 @@ func TestListIndexAddRemoveID(t *testing.T) {
 }
 
 func TestListIndexAllRecords(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()
@@ -292,11 +359,19 @@ func TestListIndexAllRecords(t *testing.T) {
 		opts := index.NewOptions()
 		opts.Limit = 1
 		ids, err = idx.AllRecords(opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 1)
 
 		opts = index.NewOptions()
 		opts.Skip = 2
 		ids, err = idx.AllRecords(opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		
 		require.Len(t, ids, 2)
 
 		opts = index.NewOptions()
@@ -313,7 +388,7 @@ func TestListIndexAllRecords(t *testing.T) {
 }
 
 func TestListIndexRange(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()
@@ -409,7 +484,7 @@ func TestListIndexRange(t *testing.T) {
 }
 
 func TestListIndexPrefix(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()

@@ -2,20 +2,19 @@ package index_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
 
-	"github.com/asdine/storm/v3"
-	"github.com/asdine/storm/v3/codec/gob"
-	"github.com/asdine/storm/v3/index"
-	bolt "go.etcd.io/bbolt"
+	"github.com/kachaje/storm/v3"
+	"github.com/kachaje/storm/v3/codec/gob"
+	"github.com/kachaje/storm/v3/index"
 	"github.com/stretchr/testify/require"
+	bolt "go.etcd.io/bbolt"
 )
 
 func TestUniqueIndex(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()
@@ -120,7 +119,7 @@ func TestUniqueIndex(t *testing.T) {
 }
 
 func TestUniqueIndexRange(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()
@@ -192,7 +191,7 @@ func TestUniqueIndexRange(t *testing.T) {
 }
 
 func TestUniqueIndexPrefix(t *testing.T) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 	defer db.Close()

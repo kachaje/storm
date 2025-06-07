@@ -4,8 +4,8 @@ package protobuf
 import (
 	"errors"
 
-	"github.com/asdine/storm/v3/codec/json"
 	"github.com/golang/protobuf/proto"
+	"github.com/kachaje/storm/v3/codec/json"
 )
 
 const name = "protobuf"

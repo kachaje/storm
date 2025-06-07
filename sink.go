@@ -4,8 +4,9 @@ import (
 	"reflect"
 	"sort"
 	"time"
-	"github.com/asdine/storm/v3/index"
-	"github.com/asdine/storm/v3/q"
+
+	"github.com/kachaje/storm/v3/index"
+	"github.com/kachaje/storm/v3/q"
 	bolt "go.etcd.io/bbolt"
 )
 

@@ -2,20 +2,19 @@ package storm_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/asdine/storm/v3"
-	"github.com/asdine/storm/v3/codec/gob"
+	"github.com/kachaje/storm/v3"
+	"github.com/kachaje/storm/v3/codec/gob"
 	bolt "go.etcd.io/bbolt"
 )
 
 func ExampleDB_Save() {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 
 	type User struct {
@@ -195,7 +194,7 @@ func ExampleSkip() {
 }
 
 func ExampleUseDB() {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	defer os.RemoveAll(dir)
 
 	bDB, err := bolt.Open(filepath.Join(dir, "bolt.db"), 0600, &bolt.Options{Timeout: 10 * time.Second})
@@ -516,7 +515,7 @@ type Note struct {
 }
 
 func prepareDB() (string, *storm.DB) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 
 	for i, name := range []string{"John", "Eric", "Dilbert"} {

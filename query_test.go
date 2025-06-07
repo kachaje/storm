@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/asdine/storm/v3/codec/json"
-	"github.com/asdine/storm/v3/q"
+	"github.com/kachaje/storm/v3/codec/json"
+	"github.com/kachaje/storm/v3/q"
 	"github.com/stretchr/testify/require"
 )
 

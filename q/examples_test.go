@@ -8,12 +8,11 @@ import (
 
 	"os"
 
-	"io/ioutil"
 	"path/filepath"
 	"strings"
 
-	"github.com/asdine/storm/v3"
-	"github.com/asdine/storm/v3/q"
+	"github.com/kachaje/storm/v3"
+	"github.com/kachaje/storm/v3/q"
 )
 
 func ExampleRe() {
@@ -46,7 +45,7 @@ type User struct {
 }
 
 func prepareDB() (string, *storm.DB) {
-	dir, _ := ioutil.TempDir(os.TempDir(), "storm")
+	dir, _ := os.MkdirTemp(os.TempDir(), "storm")
 	db, _ := storm.Open(filepath.Join(dir, "storm.db"))
 
 	for i, name := range []string{"John", "Norm", "Donald", "Eric", "Dilbert"} {

@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/asdine/storm/v3/codec/gob"
-	"github.com/asdine/storm/v3/codec/json"
-	"github.com/asdine/storm/v3/q"
+	"github.com/kachaje/storm/v3/codec/gob"
+	"github.com/kachaje/storm/v3/codec/json"
+	"github.com/kachaje/storm/v3/q"
 	"github.com/stretchr/testify/require"
 	bolt "go.etcd.io/bbolt"
 )

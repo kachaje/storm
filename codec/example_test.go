@@ -2,6 +2,7 @@ package codec_test
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/kachaje/storm/v3"
 	"github.com/kachaje/storm/v3/codec/gob"
@@ -12,6 +13,12 @@ import (
 )
 
 func Example() {
+	defer func() {
+		for _, file := range []string{"gob.db", "json.db", "msgpack.db", "sereal.db", "protobuf.db"} {
+			os.RemoveAll(file)
+		}
+	}()
+
 	// The examples below show how to set up all the codecs shipped with Storm.
 	// Proper error handling left out to make it simple.
 	var gobDb, _ = storm.Open("gob.db", storm.Codec(gob.Codec))

@@ -74,7 +74,7 @@ func TestListIndex(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 0)
 
 		err = idx.RemoveID(nil)
@@ -107,20 +107,20 @@ func TestListIndex(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id1"), ids[0])
 		ids, err = idx.All([]byte("hi"), nil)
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 0)
 		ids, err = idx.All([]byte("yo"), nil)
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id3"), ids[0])
 
@@ -133,27 +133,27 @@ func TestListIndex(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		err = idx.Add([]byte("hey"), []byte("id2"))
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		err = idx.Add([]byte("hey"), []byte("id3"))
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		err = idx.Add([]byte("hey"), []byte("id4"))
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		ids, err = idx.All([]byte("hey"), nil)
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 4)
 
 		opts := index.NewOptions()
@@ -162,7 +162,7 @@ func TestListIndex(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 1)
 
 		opts = index.NewOptions()
@@ -171,7 +171,7 @@ func TestListIndex(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 2)
 
 		opts = index.NewOptions()
@@ -182,7 +182,7 @@ func TestListIndex(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 2)
 		require.Equal(t, []byte("id2"), ids[0])
 
@@ -225,7 +225,7 @@ func TestListIndexReverse(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id1"), ids[0])
 
@@ -235,7 +235,7 @@ func TestListIndexReverse(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 1)
 		require.Equal(t, []byte("id1"), ids[0])
 
@@ -248,7 +248,7 @@ func TestListIndexReverse(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 2)
 		require.Equal(t, []byte("id2"), ids[0])
 		require.Equal(t, []byte("id1"), ids[1])
@@ -362,7 +362,7 @@ func TestListIndexAllRecords(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 1)
 
 		opts = index.NewOptions()
@@ -371,7 +371,7 @@ func TestListIndexAllRecords(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		
+
 		require.Len(t, ids, 2)
 
 		opts = index.NewOptions()
